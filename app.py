@@ -108,7 +108,7 @@ if section == "Q1 · Top 10 Final Consumption (2023)":
     ]
     df_2023_consumption = (
         df_2023_consumption.groupby(["Country", "Balance", "Product", "Year", "Unit"])
-        .sum("Value")
+        .sum(numeric_only=True)
         .fillna(0)
         .sort_values(by="Value", ascending=False)
         .head(10)
@@ -134,7 +134,7 @@ elif section == "Q2 · Top 10 Net Production (2023)":
     df_2023_production = df_2023[df_2023["Balance"] == "Net Electricity Production"]
     df_2023_production = (
         df_2023_production.groupby(["Country", "Year", "Unit", "Balance", "Product"])
-        .sum("Value")
+        .sum(numeric_only=True)
         .unstack()
         .fillna(0)
     )
@@ -185,7 +185,7 @@ elif section == "Q3 · Energy Mix 2015–2023":
 
     df_agg = (
         df_decade_production.groupby(["Year", "Unit", "Balance", "Product"])
-        .sum("Value")
+        .sum(numeric_only=True)
         .unstack()
         .fillna(0)
     )
@@ -234,7 +234,7 @@ elif section == "Q4 · Renewables Share Over Time":
     def compute_renewables_share(df_prod):
         df = (
             df_prod.groupby(["Year", "Unit", "Balance", "Product"])
-            .sum("Value")
+            .sum(numeric_only=True)
             .unstack()
             .fillna(0)
         )
@@ -283,7 +283,7 @@ elif section == "Q5 · Production vs Population":
     ]
     df_2023_prod = (
         df_2023_prod.groupby(["Country", "Year", "Unit", "Balance"])
-        .sum("Value")
+        .sum(numeric_only=True)
         .reset_index()
     )
 
@@ -321,7 +321,7 @@ elif section == "Q6 · Per-Capita Production (2023)":
     ]
     df_2023_prod = (
         df_2023_prod.groupby(["Country"])
-        .sum("Value")
+        .sum(numeric_only=True)
         .reset_index()[["Country", "Value"]]
     )
 
@@ -355,7 +355,7 @@ elif section == "Q7 · Global Seasonality":
 
     df_seasonal = (
         df_prod.groupby(["Month", "Balance", "Year"])
-        .sum("Value")
+        .sum(numeric_only=True)
         .unstack()
     )
     df_seasonal.index = df_seasonal.index.droplevel(1)
@@ -390,7 +390,7 @@ elif section == "Q8 · Australia Seasonality":
     df_country = df_prod[df_prod["Country"] == selected].copy()
     df_seasonal = (
         df_country.groupby(["Month", "Balance", "Year"])
-        .sum("Value")
+        .sum(numeric_only=True)
         .unstack()
     )
     df_seasonal.index = df_seasonal.index.droplevel(1)
@@ -455,7 +455,7 @@ elif section == "Q10 · Combustible Fuels vs CO₂":
     df_2019_prod = df_2019[df_2019["Product"] == "Total Combustible Fuels"]
     df_2019_prod = (
         df_2019_prod.groupby(["Country", "Year", "Unit", "Balance", "Product"])
-        .sum("Value")
+        .sum(numeric_only=True)
         .reset_index()
     )
     for lvl in [4, 3, 2, 1]:
